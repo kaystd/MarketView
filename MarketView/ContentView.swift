@@ -10,12 +10,20 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selection) {
-            Text("Stocks").padding(.vertical, 20)
+            NavigationStack {
+                Text("Stocks")
+                    .navigationTitle("Stocks")
+                    .navigationBarTitleDisplayMode(.large)
+            }
                 .tabItem {
                     Label("Stocks", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .tag(Tab.stocks)
-            Text("About")
+            NavigationStack {
+                Text("About")
+                    .navigationTitle("About")
+                    .navigationBarTitleDisplayMode(.large)
+            }
                 .tabItem {
                     Label("About", systemImage: "info.circle")
                 }

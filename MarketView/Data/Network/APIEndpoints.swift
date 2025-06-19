@@ -8,7 +8,7 @@
 import Foundation
 
 struct APIEndpoints {
-    func getStockList() -> Endpoint<StockListResponseDTO> {
+    static func getStockList() -> Endpoint<StockListResponseDTO> {
         return Endpoint(path: "markets/price", method: .get)
     }
 }

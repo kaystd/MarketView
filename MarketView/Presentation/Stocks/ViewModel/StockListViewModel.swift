@@ -9,9 +9,11 @@ import Foundation
 
 
 protocol StockListViewModel: ObservableObject {
-    var stocks: [Stock] { get }
+    var stocks: [StockListItemViewModel] { get }
     var loading: Bool { get }
     var errorMessage: String { get }
+    func didUpdate()
+    func didCancel()
 }
 
 final class DefaultStockListViewModel: StockListViewModel {
@@ -22,7 +24,7 @@ final class DefaultStockListViewModel: StockListViewModel {
     }
 
     private var stockUpdateTask: Task<Void, Never>?
-    @Published var stocks = [Stock]()
+    @Published var stocks = [StockListItemViewModel]()
     @Published var loading = false
     @Published var errorMessage = ""
 
@@ -33,7 +35,8 @@ final class DefaultStockListViewModel: StockListViewModel {
         stockUpdateTask = Task(priority: .medium) {
             do {
                 loading = true
-                stocks = try await fetchMainStocksUseCase.execute()
+                let stockList: [Stock] = try await fetchMainStocksUseCase.execute()
+                stocks = stockList.map(StockListItemViewModel.init)
             } catch {
                 errorMessage = error.localizedDescription
                 print(error)

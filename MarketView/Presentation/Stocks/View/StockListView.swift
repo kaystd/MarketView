@@ -8,8 +8,8 @@
 import SwiftUI
 
 
-struct StockListView: View {
-    var viewModel: any StockListViewModel
+struct StockListView<ViewModel: StockListViewModel>: View {
+    @StateObject var viewModel: ViewModel
 
     var body: some View {
         List {

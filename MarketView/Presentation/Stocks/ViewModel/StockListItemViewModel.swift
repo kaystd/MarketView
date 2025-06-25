@@ -14,7 +14,7 @@ class StockListItemViewModel: Identifiable {
     
     init(stock: Stock) {
         self.ticker = stock.ticker
-        self.price = String(format: "%.2f", stock.price)
-        self.change = String(format: "%.2f", stock.change)
+        self.price = String(format: "%.6f", stock.price)
+        self.change = String(format: "%.4f", stock.change)
     }
 }

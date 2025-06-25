@@ -32,14 +32,21 @@ final class DefaultStockListViewModel: StockListViewModel {
         defer {
             loading = false
         }
-        stockUpdateTask = Task(priority: .medium) {
+
+        loading = true
+
+        stockUpdateTask?.cancel()
+        stockUpdateTask = Task {
             do {
-                loading = true
                 let stockList: [Stock] = try await fetchMainStocksUseCase.execute()
-                stocks = stockList.map(StockListItemViewModel.init)
+                DispatchQueue.main.async {
+                    self.stocks = stockList.map(StockListItemViewModel.init)
+                }
             } catch {
-                errorMessage = error.localizedDescription
-                print(error)
+                DispatchQueue.main.async {
+                    self.errorMessage = error.localizedDescription
+                    print(error)
+                }
             }
         }
     }

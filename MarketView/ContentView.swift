@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.injected) private var injected: AppDIContainer
+
     @State private var selection = Tab.stocks
 
     enum Tab {
@@ -11,7 +13,7 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selection) {
             NavigationStack {
-                Text("Stocks")
+                StockListView(viewModel: injected.stocks.makeStockListViewModel())
                     .navigationTitle("Stocks")
                     .navigationBarTitleDisplayMode(.large)
             }

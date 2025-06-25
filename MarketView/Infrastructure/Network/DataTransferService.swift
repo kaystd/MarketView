@@ -94,7 +94,7 @@ final class DefaultDataTransferErrorLogger: DataTransferErrorLogger {
 
     func log(error: Error) {
         print("--------------------")
-        print(" \(error)")
+        print("Error: \(error)")
     }
 }
 

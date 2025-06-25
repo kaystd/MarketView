@@ -12,10 +12,10 @@ typealias StockListResponseDTO = [StockDTO]
 
 struct StockDTO: Decodable {
     let symbol: String
-    let price: Double
-    let daylyChange: Double
+    let price: String
+    let dailyChange: String
     
     func toDomain() -> Stock {
-        return .init(ticker: symbol, price: price, change: daylyChange)
+        return .init(ticker: symbol, price: Double(price) ?? 0, change: Double(dailyChange) ?? 0)
     }
 }

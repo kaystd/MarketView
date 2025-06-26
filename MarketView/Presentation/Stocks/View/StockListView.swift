@@ -12,54 +12,63 @@ struct StockListView<ViewModel: StockListViewModel>: View {
     @StateObject var viewModel: ViewModel
 
     var body: some View {
-        List {
-            Section {
-                HStack {
-                    VStack {
-                        Text("Ticker")
+        Group {
+            if viewModel.loading {
+                ProgressView("Loading...")
+                .controlSize(.large)
+            } else {
+                List {
+                    Section {
+                        HStack {
+                            VStack {
+                                Text("Ticker")
+                            }
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .fontWeight(.bold)
+                            VStack {
+                                Text("Price")
+                            }
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .fontWeight(.bold)
+                            VStack {
+                                Text("Daily change")
+                            }
+                            .frame(minWidth: 0, maxWidth: .infinity)
+                            .fontWeight(.bold)
+                        }
+                        .padding()
+                        .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+                            return 0
+                        }
+                        .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        ForEach(viewModel.stocks) { stock in
+                            HStack {
+                                VStack {
+                                    Text(stock.ticker)
+                                }.frame(minWidth: 0, maxWidth: .infinity)
+                                VStack {
+                                    Text(stock.price)
+                                }.frame(minWidth: 0, maxWidth: .infinity)
+                                VStack {
+                                    Text(stock.change)
+                                        .foregroundStyle(stock.change.contains("-") ? .red : .green)
+                                }.frame(minWidth: 0, maxWidth: .infinity)
+                            }
+                            .padding()
+                            .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+                                return 0
+                            }
+                            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        }
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .fontWeight(.bold)
-                    VStack {
-                        Text("Price")
-                    }
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .fontWeight(.bold)
-                    VStack {
-                        Text("Daily change")
-                    }
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .fontWeight(.bold)
-                }
-                .padding()
-                .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-                    return 0
-                }
-                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                ForEach(viewModel.stocks) { stock in
-                    HStack {
-                        VStack {
-                            Text(stock.ticker)
-                        }.frame(minWidth: 0, maxWidth: .infinity)
-                        VStack {
-                            Text(stock.price)
-                        }.frame(minWidth: 0, maxWidth: .infinity)
-                        VStack {
-                            Text(stock.change)
-                                .foregroundStyle(stock.change.contains("-") ? .red : .green)
-                        }.frame(minWidth: 0, maxWidth: .infinity)
-                    }
-                    .padding()
-                    .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-                        return 0
-                    }
-                    .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
             }
         }
-
         .onAppear(){
             self.viewModel.didUpdate()
+        }
+        .onDisappear() {
+            self.viewModel.didCancel()
         }
     }
 }

@@ -11,10 +11,10 @@ class StockListItemViewModel: Identifiable {
     let ticker: String
     let price: String
     let change: String
-    
+
     init(stock: Stock) {
-        self.ticker = stock.ticker
-        self.price = String(format: "%.6f", stock.price)
+        self.ticker = String(stock.ticker.split(separator: "_").first ?? "")
+        self.price = String(format: "%.4f", stock.price)
         self.change = String(format: "%.4f", stock.change)
     }
 }

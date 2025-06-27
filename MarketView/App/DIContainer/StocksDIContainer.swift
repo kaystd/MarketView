@@ -19,8 +19,8 @@ final class StocksDIContainer {
         self.dependencies = dependencies
     }
 
-    func makeFetchMainStocksUseCase() -> FetchMainStocksUseCase {
-        DefaultFetchMainStocksUseCase(
+    func makeFetchMainStocksUseCase() -> FetchStocksUseCase {
+        DefaultFetchStocksUseCase(
             stockListRepository: makeStockListRepository(),
         )
     }

@@ -8,11 +8,11 @@
 import Foundation
 
 
-protocol FetchMainStocksUseCase {
+protocol FetchStocksUseCase {
     func execute() async throws -> [Stock]
 }
 
-final class DefaultFetchMainStocksUseCase: FetchMainStocksUseCase {
+final class DefaultFetchStocksUseCase: FetchStocksUseCase {
     let stockListRepository: StockListRepository
 
     init(stockListRepository: StockListRepository) {

@@ -41,13 +41,14 @@ struct StockListView<ViewModel: StockListViewModel>: View {
                             return 0
                         }
                         .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        ForEach(viewModel.stocks) { stock in
+                        ForEach(viewModel.stocks, id: \.ticker) { stock in
                             HStack {
                                 VStack {
                                     Text(stock.ticker)
                                 }.frame(minWidth: 0, maxWidth: .infinity)
                                 VStack {
-                                    Text(stock.price)
+                                    AnimatedText(text: stock.price)
+                                        .id(stock.ticker)
                                 }.frame(minWidth: 0, maxWidth: .infinity)
                                 VStack {
                                     Text(stock.change)

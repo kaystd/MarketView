@@ -18,9 +18,9 @@ protocol StockListViewModel: ObservableObject {
 }
 
 final class DefaultStockListViewModel: StockListViewModel {
-    private let fetchMainStocksUseCase: FetchMainStocksUseCase
+    private let fetchMainStocksUseCase: FetchStocksUseCase
 
-    init(fetchMainStocksUseCase: FetchMainStocksUseCase) {
+    init(fetchMainStocksUseCase: FetchStocksUseCase) {
         self.fetchMainStocksUseCase = fetchMainStocksUseCase
     }
 
@@ -33,6 +33,7 @@ final class DefaultStockListViewModel: StockListViewModel {
     @Published var loading = false
     @Published var errorMessage = ""
     var timerPublisher: AnyCancellable?
+    private let mainStockList = ["BTC_USDT", "ETH_USDT", "XRP_USDT", "BNB_USDT", "SOL_USDT", "TRX_USDT", "DOGE_USDT", "ADA_USDT", "HYPE_USDT", "BCH_USDT", "SUI_USDT", "LINK_USDT", "LEO_USDT", "XLM_USDT", "AVAX_USDT", "TON_USDT"]
 
     func updateStocks() {
         stocks.isEmpty ? loading = true : ()
@@ -41,7 +42,15 @@ final class DefaultStockListViewModel: StockListViewModel {
             do {
                 let stockList: [Stock] = try await fetchMainStocksUseCase.execute()
                 DispatchQueue.main.async {
-                    self.stocks = stockList.map(StockListItemViewModel.init)
+                    self.stocks = stockList
+                        .filter { stock in self.mainStockList.contains(where: { $0 == stock.ticker }) }
+                        .sorted {
+                            guard let firstIndex = self.mainStockList.firstIndex(of: $0.ticker),
+                                  let secondIndex = self.mainStockList.firstIndex(of: $1.ticker)
+                            else { return false }
+                            return firstIndex < secondIndex
+                        }
+                        .map(StockListItemViewModel.init)
                     self.loading = false
                 }
             } catch {

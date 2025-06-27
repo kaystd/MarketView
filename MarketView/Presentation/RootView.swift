@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
+struct RootView: View {
     @Environment(\.injected) private var injected: AppDIContainer
 
     @State private var selection = Tab.stocks
@@ -35,5 +35,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    RootView()
 }

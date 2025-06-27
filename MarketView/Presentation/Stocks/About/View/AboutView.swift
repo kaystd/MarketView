@@ -11,7 +11,7 @@ import SwiftUI
 struct AboutView: View {
     @Environment(\.injected) private var injected: AppDIContainer
 
-    @Binding var selectedTab: ContentView.Tab
+    @Binding var selectedTab: RootView.Tab
 
     var body: some View {
         VStack(spacing: 32) {
@@ -19,7 +19,7 @@ struct AboutView: View {
                 .font(.largeTitle)
             Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "Unknown")")
             Button("To Stocks") {
-                selectedTab = ContentView.Tab.stocks
+                selectedTab = RootView.Tab.stocks
             }
         }
         
@@ -27,6 +27,6 @@ struct AboutView: View {
 }
 
 #Preview {
-    @Previewable @State var selection = ContentView.Tab.stocks
+    @Previewable @State var selection = RootView.Tab.stocks
     AboutView(selectedTab: $selection)
 }

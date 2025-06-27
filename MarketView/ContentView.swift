@@ -22,7 +22,7 @@ struct ContentView: View {
                 }
                 .tag(Tab.stocks)
             NavigationStack {
-                Text("About")
+                AboutView(selectedTab: $selection)
                     .navigationTitle("About")
                     .navigationBarTitleDisplayMode(.large)
             }
